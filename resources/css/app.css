@@ -1,0 +1,242 @@
+@import "tailwindcss";
+
+/* 1. Configuration - Tailwind v4 Source Mapping */
+@source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
+@source "../../storage/framework/views/*.php";
+@source "../**/*.blade.php";
+@source "../**/*.js";
+
+/* 2. Theme Tokens */
+@theme {
+    --font-sans: "Inter", "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+    --color-brand-primary: #3b82f6;
+    --color-brand-secondary: #10b981;
+
+     --font-sans: "Inter", "Instrument Sans", sans-serif;
+    /* Premium Gold Palette */
+    --color-gold-light: #fde68a;
+    --color-gold-primary: #fbbf24; 
+    --color-gold-dark: #b45309;
+     --color-maroon-primary: #800000;
+    --color-maroon-light: #a52a2a;
+    --color-orange-fade: #fff7ed; /* Very light orange (Tailwind Orange 50) */
+    --color-orange-soft: #ffedd5; /* Slightly deeper (Tailwind Orange 100) */
+}
+
+/* 3. Global UI Styles */
+@layer base {
+    body {
+        /* This applies the Fade Orange background globally */
+        @apply antialiased text-gray-900;
+        
+        /* 2025 Premium Fade Look: subtle transition from white-orange to light-orange */
+        background-color: #fff7ed !important; 
+        background-image: linear-gradient(to bottom, #fff7ed, #ffedd5) !important; 
+        background-attachment: fixed;
+        
+        /* Essential for Google Translate: prevents the top white bar push-down */
+        top: 0 !important; 
+        position: static !important;
+    }
+
+    /* GLOBAL LINK RESET: Removes underlines from all components */
+    a {
+        text-decoration: none !important;
+        @apply transition-colors duration-200;
+    }
+
+    /* --- Aggressive Google Translate Cleanup --- */
+    
+    /* 1. Remove the top banner frame */
+    .goog-te-banner-frame.skiptranslate, 
+    .goog-te-gadget-icon,
+    .skiptranslate iframe,
+    .goog-te-banner-frame {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    /* 2. REMOVE "ORIGINAL TEXT" TOOLTIP POPUP (The hover issue) */
+    #goog-gt-tt, 
+    .goog-te-balloon-frame,
+    .goog-tooltip,
+    .goog-tooltip:hover,
+    .VIpgJd-y6oGMc-vis3nd-VG7s0e-bN97Pc { /* 2025 specific Google ID */
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+
+    /* 3. REMOVE TEXT HIGHLIGHTS (The blue/yellow background on hover) */
+    .goog-text-highlight {
+        background-color: transparent !important;
+        background: none !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+    
+    /* 4. Fix dropdown menu fonts */
+    .goog-te-menu-value span {
+        @apply text-sm font-medium text-gray-700;
+    }
+}
+
+
+/* 4. Custom UI Components */
+@layer components {
+    /* Drive Button */
+    .btn-drive {
+        @apply bg-brand-primary text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition-transform hover:scale-105 active:scale-95 flex items-center gap-2;
+    }
+    
+    /* Success GIF */
+    .success-gif {
+        @apply w-24 h-24 mx-auto my-4 rounded-full border-4 border-brand-secondary shadow-sm;
+    }
+
+    /* Language Dropdown Container */
+    .language-dropdown {
+        @apply relative inline-block;
+    }
+
+    .globe-btn {
+        @apply p-1.5 rounded-full hover:bg-white/10 transition-colors text-lg text-white;
+    }
+
+    .dropdown-content {
+        @apply hidden absolute right-0 w-36 bg-[#161616] border border-white/10 rounded-lg shadow-2xl z-50;
+        top: 100%;
+        margin-top: 0.3rem;
+    }
+
+    .language-dropdown::after {
+        content: "";
+        @apply absolute left-0 right-0 h-3;
+        top: 100%;
+    }
+
+    .language-dropdown:hover .dropdown-content {
+        @apply block;
+        animation: fadeInSlide 0.15s ease-out;
+    }
+
+    .dropdown-content a {
+        @apply flex items-center gap-2 px-3 py-1.5 text-[11px] font-medium text-gray-400 no-underline hover:bg-white/5 hover:text-white transition-all border-b border-white/5 last:border-0;
+        text-decoration: none !important;
+    }
+
+    .dropdown-content img {
+        @apply w-4 h-2.5 object-cover rounded-[1px] opacity-80;
+    }
+
+    /* FLOATING PILL NAVIGATION (CENTERED) */
+     .sticky-nav {
+        @apply fixed bottom-6 left-0 right-0 z-50 px-4;
+    }
+
+    .nav-pill-box {
+        /* Force the width of the container */
+        width: 95% !important;
+        max-width: 800px !important;
+        @apply mx-auto bg-[#1a1a1a]/95 backdrop-blur-md border border-white/10 rounded-2xl shadow-2xl py-3 px-8;
+        
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .force-nav-center {
+        @apply flex items-center justify-between w-full list-none m-0 p-0;
+    }
+
+    .nav-link {
+        * DEFAULT STATE: Maroon */
+        @apply flex flex-col items-center gap-1 transition-all duration-300 no-underline;
+        color: var(--color-maroon-light) !important;
+        
+    }
+
+    .nav-link i {
+        @apply text-2xl; /* Larger icons */
+    }
+
+    .nav-label {
+        @apply text-[10px] font-bold uppercase tracking-widest;
+    }
+
+    /* ACTIVE STATE: GOLD THEME */
+    .nav-link.active {
+        color: var(--color-gold-primary) !important;
+    }
+
+    .nav-link.active i {
+        /* Gold Glow Effect */
+        @apply scale-110;
+        filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.6));
+    }
+
+    .nav-link.active .nav-label {
+        color: var(--color-gold-light) !important;
+        @apply font-black;
+    }
+
+        /* Dashboard Menu Grid Items */
+    .menu-item {
+        @apply flex flex-col items-center justify-center p-4 bg-white rounded-2xl transition-all duration-300 shadow-sm h-full;
+        /* Permanent Gold Border */
+        border: 2px solid var(--color-gold-primary); 
+        /* Remove all underlines */
+        text-decoration: none !important; 
+    }
+
+    /* Hover Effect: Purely Visual Lift & Glow (No border change) */
+    .menu-item:hover {
+        @apply -translate-y-1 shadow-2xl;
+        background-color: #fffdf5; /* Subtle warmth on hover */
+        box-shadow: 0 10px 25px -5px rgba(251, 191, 36, 0.4);
+        text-decoration: none !important;
+    }
+
+    .menu-item i {
+        @apply text-2xl mb-2;
+        text-decoration: none !important;
+    }
+
+    .menu-item span {
+        @apply text-xs font-bold text-gray-800 uppercase tracking-tight;
+        text-decoration: none !important;
+    }
+
+
+}
+
+/* 5. Animations */
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+} /* Fixed: Added missing closing brace for @keyframes */
+
+/* 6. Google Translate Cleanup */
+goog-gt-tt, 
+.goog-te-balloon-frame,
+.goog-tooltip,
+.goog-tooltip:hover {
+    display: none !important;
+}
+
+/* Remove the yellow highlight effect on translated text */
+.goog-text-highlight {
+    background-color: transparent !important;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Fixed: Removed the orphaned extra closing brace '}' that was at the very bottom */

@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+/* --- 1. GLOBAL SCROLLBAR --- */
+html, body, main {
+    scrollbar-width: thin;
+    scrollbar-color: #94a3b8 #f1f5f9;
+}
+
+::-webkit-scrollbar { 
+    width: 12px; 
+    height: 10px; 
+}
+
+::-webkit-scrollbar-track { 
+    background: #f8fafc; 
+}
+
+::-webkit-scrollbar-thumb { 
+    background: #cbd5e1; 
+    border-radius: 100px; 
+    border: 3px solid #f8fafc; 
+}
+
+::-webkit-scrollbar-thumb:hover { 
+    background: #64748b; 
+}
+
+/* --- 2. SIDEBAR SCROLLBAR --- */
+.sidebar-scroll::-webkit-scrollbar { 
+    width: 5px; 
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb { 
+    background: #475569; 
+    border: none;
+}
+
+/* --- 3. HIDE INTERNAL TABLE SCROLLBARS --- */
+.overflow-y-auto:not(main):not(.sidebar-scroll) {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+
+.overflow-y-auto:not(main):not(.sidebar-scroll)::-webkit-scrollbar {
+    display: none !important;
+}
+
+/* --- 4. LOADER & BUTTON ANIMATIONS --- */
+.loader {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid #ffffff;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    animation: spin 0.8s linear infinite;
+    display: inline-block;
+}
+
+@keyframes spin { 
+    0% { transform: rotate(0deg); } 
+    100% { transform: rotate(360deg); } 
+}
+
+.btn-loading {
+    pointer-events: none;
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Alpine.js Cloak */
+[x-cloak] { 
+    display: none !important; 
+}
