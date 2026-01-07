@@ -2,7 +2,7 @@
      <div class="anim-icon"><img src="{{ asset('home/images/icons/banner-h1-2.png') }}" alt=""></div>
       <div class="outer-box">
         <div class="bg-image"><img src="{{ asset('home/images/banner/banner-h1-1.jpg') }}" alt=""></div>
-        <div class="tm-text-editor">webtec</div>
+        <div class="tm-text-editor">SwissPixel</div>
         <div class="shape-1"><img src="{{ asset('home/images/banner/banner-h1-3.png') }}" alt=""></div>
         <div class="shape-2 bounce-y"><img src="{{ asset('home/images/banner/banner-h1-4.png') }}" alt=""></div>
         <div class="shape-3"><img src="{{ asset('home/images/banner/banner-h1-5.png') }}" alt=""></div>
