@@ -30,9 +30,7 @@ class EditUser extends Component
         $this->username = $user->username;
         $this->phone = $user->phone_no;
         $this->balance = $user->balance;
-        $this->status = $user->status;
-
-        $this->status = $user->status; 
+        $this->status = $user->status ?? 'active'; 
     }
 
     public function update()

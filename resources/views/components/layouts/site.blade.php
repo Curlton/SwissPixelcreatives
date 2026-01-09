@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Optimize 2025</title>
+    <title>SwissPixel</title>
 
     <!-- 1. CORRECTED CDNs - MUST BE IN THIS ORDER -->
     <!-- Bootstrap 5.3.3 CSS -->
@@ -12,6 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
     <!-- Font Awesome 6.x CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="shortcut icon" href="{{ asset('home/images/favicon.png') }}" type="image/x-icon" />
 
     
 
@@ -21,11 +22,13 @@
 <body>
 
     <!-- DARK HEADER -->
-<header class="bg-slate-900 text-white py-2 shadow-lg">
-    <div class="container d-flex justify-content-between align-items-center px-4">
-        <!-- Replace the text div with this anchor and image -->
-        <a href="/" class="d-block">
-            <img src="/assets/images/company-logos/Click_vision.png" alt="Company Logo" class="h-20 w-auto">
+<header class="bg-slate-900 text-white shadow-lg" style="min-height: 100px; display: flex; align-items: center; padding: 0;">
+    <div class="container-fluid d-flex justify-content-between align-items-center px-4">
+        
+        <a href="/" class="d-flex align-items-center" style="text-decoration: none; padding: 0; margin-left: -10px;">
+            <img src="{{ asset('assets/images/company-logos/Click_vision.png') }}" 
+                 alt="Click Vision Logo" 
+                 style="height: 100px; width: auto; object-fit: contain; display: block; transform: scale(1.1); transform-origin: left center;">
         </a>
     <!-- CRITICAL: The hidden Google Translate engine placeholder -->
     <div id="google_translate_element" style="display:none"></div>

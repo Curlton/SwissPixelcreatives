@@ -21,6 +21,18 @@
     <!-- Favicons -->
     <link rel="shortcut icon" href="{{ asset('home/images/favicon.png') }}" type="image/x-icon" />
     <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <div id="google_translate_element" style="display:none !important;"></div>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    // Removed the "layout" restriction to make the combo box easier for JS to find
+    autoDisplay: false
+  }, 'google_translate_element');
+}
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 	
     @livewireStyles
 </head>
@@ -125,7 +137,7 @@
               <i class="icon lnr-icon-envelope1"></i>
               <span class="title">Send Email</span>
               <div class="text">
-    <a href="mailto:support@swisspixel.com">support@swisspixel.com</a>
+    <a href="mailto:support@swisspixel.com">support@swisspixelcreatives.com</a>
 </div>
 
             </li>
@@ -179,7 +191,7 @@
               <span class="icon"><i aria-hidden="true" class="fas fa-phone-alt"></i></span>
               <span class="info">
                 Call Anytime
-                <strong>+88 017 500 500 88 </strong>
+                <strong>+1 850 693-1231 </strong>
               </span>
             </a>
           </div>
@@ -236,8 +248,8 @@
               <div class="footer-widget about-widget wow fadeInLeft">
                 <div class="widget-content">
                   <div class="contact-area">
-                    <div class="mb-3"><a class="phone" href="tel:01750050088">+ (123) 456-7890</a></div>
-                    <div><a class="mail" href="mailto:support@swisspixel.com">support@swisspixel.com</a></div>
+                    <div class="mb-3"><a class="phone" href="tel:01750050088">+1 (850) 693-1231</a></div>
+                    <div><a class="mail" href="mailto:support@swisspixel.com">support@swisspixelcreatives.com</a></div>
                   </div>
                   <div class="social-widget mt-30">
                     <ul class="social-icon-list1 mb-5 mb-lg-0">
@@ -327,6 +339,7 @@
             window.csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         });
     </script>
+
 @livewireScripts
 </body>
 

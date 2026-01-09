@@ -115,7 +115,7 @@
         </a>
     </div>
     <div class="col">
-        <a href="/certificates" wire:navigate class="menu-item">
+        <a href="{{ route('certificate-viewer') }}" wire:navigate class="menu-item">
             <i class="ri-award-line text-indigo"></i>
             <span>Certificates</span>
         </a>

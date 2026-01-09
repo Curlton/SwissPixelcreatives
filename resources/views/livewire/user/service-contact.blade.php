@@ -22,6 +22,17 @@
             </svg>
             <span class="mt-2 text-sm font-medium">Telegram</span>
         </a>
+
+         <!-- WhatsApp Link -->
+        <a href="https://wa.me/{{ $whatsappNumber1 }}"  
+        {{ $whatsappNumber1 }}?text=Hello,%20I%20need%20assistance%20with%20my%20account." 
+           target="_blank" 
+           class="flex flex-col items-center hover:opacity-80 transition">
+            <svg class="w-12 h-12 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.246 2.248 3.484 5.232 3.484 8.412-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.309 1.656zm6.29-4.143c1.589.943 3.131 1.468 4.76 1.469 5.405 0 9.813-4.41 9.815-9.814.001-2.618-1.02-5.08-2.876-6.937-1.856-1.856-4.318-2.876-6.936-2.877-5.41 0-9.813 4.414-9.815 9.815-.001 1.838.482 3.533 1.426 5.158l-.94 3.433 3.566-.907z"/>
+            </svg>
+            <span class="mt-2 text-sm font-medium">WhatsApp</span>
+        </a>
     </div>
 </div>
 

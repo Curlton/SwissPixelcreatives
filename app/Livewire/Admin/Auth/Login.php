@@ -6,7 +6,7 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Session; // Best practice for clarity
-
+#[Title('SwissPixel | Admin Login')]
 #[Layout('components.layouts.admin-auth')] 
 class Login extends Component
 {

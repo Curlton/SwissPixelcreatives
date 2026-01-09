@@ -66,7 +66,7 @@
     </div>
 </td>
 
-                            <td class="p-4">{{ $user->phone }}</td>
+                            <td class="p-4">{{ $user->phone_no }}</td>
                             <td class="p-4 text-center font-bold text-blue-600">${{ number_format($user->balance, 2) }}</td>
                             <td class="p-4 text-center">
     <div class="flex flex-col items-center gap-2">
