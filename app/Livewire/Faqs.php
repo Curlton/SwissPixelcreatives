@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Livewire;
-
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class Faqs extends Component
 {
+    #[Title('Faqs')]
     public $faqs = [
         [
             'question' => 'How do I start the optimization process?',

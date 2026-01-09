@@ -1,14 +1,15 @@
 <?php
 
 namespace App\Livewire\Admin;
-
+use Livewire\Attributes\Title;
 use App\Models\Dataset;
 use App\Models\Withdraw; 
 use App\Models\Deposit;  
 use Livewire\Component;
 
 class Dashboard extends Component
-{   
+{  
+    #[Title('Admin-dashboard')] 
     public $withdrawData = [];
     public $pendingData = [];
     public $depositData = [];

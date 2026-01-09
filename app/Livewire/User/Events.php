@@ -6,11 +6,12 @@ use Livewire\Component;
 use App\Models\UserDataset;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination; // Import the trait
-
+use Livewire\Attributes\Title;
 class Events extends Component
 {
+    
     use WithPagination; // Use the trait
-
+    #[Title('Events')]
     public $activeTab = 'all';
 
     // Reset pagination when the tab changes

@@ -6,9 +6,11 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Livewire\Attributes\Title;
 
 class Profile extends Component
 {
+    #[Title('Profile')]
     public $current_password, $new_password, $new_password_confirmation;
 
     // Handle Password Change

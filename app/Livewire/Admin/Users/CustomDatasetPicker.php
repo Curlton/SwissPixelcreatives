@@ -4,9 +4,10 @@ namespace App\Livewire\Admin\Users;
 use App\Models\User;
 use App\Models\DataSet;
 use Livewire\Component;
-
+use Livewire\Attributes\Title;
 class CustomDatasetPicker extends Component
 {
+    #[Title('CustomDatasetPicker')]
     public User $user;
     public $productList = []; 
     public $rows = []; 

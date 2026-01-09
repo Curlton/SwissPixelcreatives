@@ -5,9 +5,10 @@ namespace App\Livewire\User\Withdraw;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Withdraw;
-
+use Livewire\Attributes\Title;
 class UsdtWithdraw extends Component
 {
+    #[Title('usdt-withdrawal')]
     public $wallet_address;
     public $amount = 10;
 

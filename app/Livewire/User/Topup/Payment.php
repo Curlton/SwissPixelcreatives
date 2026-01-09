@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Livewire\User\Topup;
-
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class Payment extends Component
 {
+    #[Title('Payment')]
     public $method;
     public $selectedAmount = 0; // Default amount
 

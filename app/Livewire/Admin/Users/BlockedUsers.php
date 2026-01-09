@@ -5,11 +5,12 @@ namespace App\Livewire\Admin\Users;
 use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
-
+use Livewire\Attributes\Title;
 class BlockedUsers extends Component
 {
+    
     use WithPagination;
-
+    #[Title('BlockedUsers')]
     public $search = '';
 
     protected $paginationTheme = 'tailwind';

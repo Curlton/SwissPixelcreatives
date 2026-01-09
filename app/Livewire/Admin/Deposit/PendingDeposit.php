@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Livewire\Admin\Deposit;
-
+use Livewire\Attributes\Title;
 use App\Models\Deposit;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
@@ -9,6 +9,7 @@ use Livewire\Attributes\Layout;
 #[Layout('components.layouts.admin')]
 class PendingDeposit extends Component
 {
+    #[Title('PendingDeposit')]
     public function approve($id) {
         Deposit::find($id)->update(['status' => 'approved']);
         session()->flash('success', 'Deposit approved.');

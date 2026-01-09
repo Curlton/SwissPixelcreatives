@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Livewire;
-
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class CertificateViewer extends Component
 {
+    #[Title('CertificateViewer')]
     public $showViewer = false;
     public $certificateUrl;
 

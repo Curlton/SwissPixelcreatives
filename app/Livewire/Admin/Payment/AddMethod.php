@@ -5,10 +5,11 @@ namespace App\Livewire\Admin\Payment;
 use App\Models\PaymentMethod;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
-
+use Livewire\Attributes\Title;
 #[Layout('components.layouts.admin')]
 class AddMethod extends Component
 {
+    #[Title('AddMethod')]
     // Form properties
     public $method_name;
     public $wallet_address;

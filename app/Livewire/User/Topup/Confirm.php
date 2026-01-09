@@ -5,9 +5,10 @@ use Illuminate\Support\Str;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
+use Livewire\Attributes\Title;
 class Confirm extends Component
 {
+    #[Title('Confirm')]
     public $method;
     public $amount;
     public $walletAddress;

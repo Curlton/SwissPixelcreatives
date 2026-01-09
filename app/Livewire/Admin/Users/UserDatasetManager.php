@@ -6,11 +6,11 @@ use App\Models\User;
 use App\Models\UserDataset;
 use Livewire\Component;
 use Livewire\WithPagination;
-
+use Livewire\Attributes\Title;
 class UserDatasetManager extends Component
 {
     use WithPagination;
-
+    #[Title('UserDatasetManager')]
     public User $user;
     public $selectedMembership; // Added property for the dropdown
 

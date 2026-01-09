@@ -5,10 +5,11 @@ namespace App\Livewire\Admin\Deposit;
 use App\Models\Deposit;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
-
+use Livewire\Attributes\Title;
 #[Layout('components.layouts.admin')]
 class AllDeposit extends Component
 {
+    #[Title('AllDeposit')]
     // Add approve/cancel methods here if you want actions in the All view
     public function render()
     {

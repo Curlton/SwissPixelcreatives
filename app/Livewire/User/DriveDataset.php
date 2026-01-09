@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Livewire\User;
-
 use Livewire\Component;
 use App\Models\Dataset;
 use App\Models\UserDataset;
 use Illuminate\Support\Facades\Auth;
-
+use Livewire\Attributes\Title;
 class DriveDataset extends Component
 {
+    #[Title('Drive-dataset')]
     public $setNumber = 1; 
     public $maxTasks = 40; 
     public $showTaskModal = false;

@@ -6,9 +6,9 @@ use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-
+use Livewire\Attributes\Title;
 class EditUser extends Component
-{
+{   #[Title('EditUser')]
     public User $user;
     
     // Properties that will be bound to the form inputs

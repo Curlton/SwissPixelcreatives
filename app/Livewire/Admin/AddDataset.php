@@ -5,9 +5,10 @@ namespace App\Livewire\Admin;
 use App\Models\DataSet; // Fixed case: DataSet
 use Livewire\Component;
 use Livewire\Attributes\Layout;
-
+use Livewire\Attributes\Title;
 class AddDataset extends Component
 {
+    #[Title('AddDataset')]
     public $product_id, $price, $profit, $product_desc, $product_image;
 
     // Rules defined as a property (Livewire 3 standard)

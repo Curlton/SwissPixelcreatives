@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Livewire\User;
-
+use Livewire\Attributes\Title;
 use Livewire\Component;
-#[Title('SwissPixel | Dashboard')]
+
 class Dashboard extends Component
 {
+    #[Title('SwissPixel | Dashboard')]
     public function render()
     {
         return view('livewire.user.dashboard')

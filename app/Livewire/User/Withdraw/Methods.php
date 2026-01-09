@@ -3,9 +3,10 @@
 namespace App\Livewire\User\Withdraw;
 
 use Livewire\Component;
-
+use Livewire\Attributes\Title;
 class Methods extends Component
 {
+    #[Title('Method')]
     public function render()
     {
         

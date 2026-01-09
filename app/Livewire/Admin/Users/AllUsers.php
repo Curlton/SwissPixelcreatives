@@ -5,11 +5,11 @@ namespace App\Livewire\Admin\Users;
 use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
-
+use Livewire\Attributes\Title;
 class AllUsers extends Component
 {
     use WithPagination;
-
+    #[Title('AllUsers')]
     public $search = ''; // 1. Property to hold the search term
 
     protected $paginationTheme = 'tailwind';

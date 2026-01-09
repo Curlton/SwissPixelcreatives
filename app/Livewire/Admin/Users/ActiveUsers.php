@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Livewire\Admin\Users;
-
+use Livewire\Attributes\Title;
 use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -9,7 +9,7 @@ use Livewire\WithPagination;
 class ActiveUsers extends Component
 {
     use WithPagination;
-
+    #[Title('ActiveUsers')]
     public $search = '';
 
     protected $paginationTheme = 'tailwind';
