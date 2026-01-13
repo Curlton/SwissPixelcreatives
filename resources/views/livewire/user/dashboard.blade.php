@@ -85,7 +85,7 @@
     </div>
     <div class="col">
         <a href="{{ route('user.withdraw.methods') }}" wire:external class="menu-item">
-            <i class="ri-hand-coin-line text-danger"></i>
+            <i class="ri-hand-coin-line text-success"></i>
             <span>Withdraw</span>
         </a>
     </div>

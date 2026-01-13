@@ -64,7 +64,7 @@
             </span>
         </button>
     </div>
-
+<audio id="submitClickSound" src="{{ asset('assets/sound.mp3') }}" preload="auto"></audio>
    <!-- LOADING GIF OVERLAY -->
 <div x-show="loadingSet" x-cloak class="fixed inset-0 z-[9999] flex items-center justify-center p-4">
     <div class="absolute inset-0 bg-slate-900/60"></div>
@@ -139,19 +139,31 @@
                     </button>
 
                     <!-- Submit Button -->
-                    <button type="button"
-                            x-on:click="isSubmitting = true; setTimeout(() => { $wire.submitTask().then(() => { isSubmitting = false; open = false; }) }, 2000)" 
-                            :disabled="isSubmitting"
-                            class="flex-1 py-2 px-2 rounded-pill font-black text-[10px] uppercase tracking-[0.2em] transition-all active:scale-95 disabled:opacity-50"
-                            style="border: 2px solid #d4af37; background-color: #1e293b; color: white;">
-                        <span>Submit</span>
-                    </button>
+                    
+<button type="button"
+        x-on:click="
+            document.getElementById('submitClickSound').play(); // 1. Play sound immediately
+            isSubmitting = true;                                // 2. Start loading UI
+            setTimeout(() => { 
+                $wire.submitTask().then(() => { 
+                    isSubmitting = false; 
+                    open = false; 
+                }) 
+            }, 3000)" 
+        :disabled="isSubmitting"
+        class="flex-1 py-2 px-2 rounded-pill font-black text-[10px] uppercase tracking-[0.2em] transition-all active:scale-95 disabled:opacity-50"
+        style="border: 2px solid #d4af37; background-color: #1e293b; color: white;">
+    <span>Submit</span>
+</button>
+
                 </div>
             </div>
         @endif
     </div>
 
     <!-- SUBMISSION PROCESSING OVERLAY (Nested inside x-data to share isSubmitting) -->
+    
+
     <div x-show="isSubmitting" 
          x-cloak 
          class="fixed inset-0 z-[9999] flex items-center justify-center p-4">
@@ -174,11 +186,11 @@
                 <!-- Bar animation triggered by isSubmitting -->
                 <div x-show="isSubmitting" 
                      class="bg-blue-600 h-full rounded-full" 
-                     style="width: 0%; animation: fillProgress 5s linear forwards;">
+                     style="width: 0%; animation: fillProgress 3s linear forwards;">
                 </div>
             </div>
             
-            <span class="text-slate-400 font-bold normal-case mt-3 block" style="font-size: 0.6rem;">Uploading to secure server...</span>
+            <span class="text-slate-400 font-bold normal-case mt-3 block" style="font-size: 0.6rem;">Optimizing...</span>
         </div>
     </div>
 </div>

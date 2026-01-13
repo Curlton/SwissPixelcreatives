@@ -1,19 +1,22 @@
 <?php
-
 namespace App\Livewire;
-use Livewire\Attributes\Title;
+
 use Livewire\Component;
+use Livewire\Attributes\Title;
+use Livewire\Attributes\Locked; // Recommended for 2026
 
 class CertificateViewer extends Component
 {
-    #[Title('CertificateViewer')]
+    #[Title('Certificate Viewer')]
     public $showViewer = false;
+
+    #[Locked] // Prevents front-end manipulation of the URL
     public $certificateUrl;
 
     public function mount()
     {
-        // Pre-set the route so the iframe is ready to load immediately on click
-        $this->certificateUrl = route('certificate.view', ['filename' => 'company_cert.pdf']);
+        // Fix: Use 'certificate' as the key to match your Route definition
+        $this->certificateUrl = route('certificate.view', ['certificate' => 'certificate.pdf']);
     }
 
     public function toggleView()

@@ -1,4 +1,19 @@
 <x-layouts.home>
+    <section class="page-title pt-5" 
+    style="background-image: url({{ asset('home/images/background/page-title.jpg') }}); 
+           padding: 220px 0 150px 0; 
+           background-size: cover; 
+           background-position: center;">
+        <div class="auto-container">
+            <div class="title-outer text-center" style="margin-top: 130px">
+                <h1 class="title" style="color: white; font-weight: 800;">Project Grid</h1>
+                <ul class="page-breadcrumb">
+                    <li><a href="/">Home</a></li>
+                    <li style="color: rgba(255,255,255,0.7);">Projects</li>
+                </ul>
+            </div>
+        </div>
+    </section>
       <!-- start project section h1 -->
     <section class="project-section-h1 pt-100 pb-70">
       <div class="outer-box">

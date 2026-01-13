@@ -1,4 +1,16 @@
 <div>
+  <section class="page-title" style="background-image: url({{ asset('home/images/background/page-title.jpg') }}); padding: 100px 0;">
+    <div class="auto-container">
+        <div class="title-outer text-center">
+            <h1 class="title" style="color: white;">About Us</h1>
+            <ul class="page-breadcrumb">
+                <li><a href="/">Home</a></li>
+                <li style="color: rgba(255,255,255,0.7);">About</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
      <section class="about-section-h1">
       <div class="outer-box">
         <div class="row">
@@ -12,7 +24,7 @@
             <div class="inner-block wow fadeInUp" data-wow-delay="200ms">
               <div class="sec-title-h1">
                 <h6 class="sub-title">KNOW ABOUT US</h6>
-                <h2 class="title">We are a digital marketing agency based in Zug, which doesnot do advertising.</h2>
+                <h2 class="title">We are a digital marketing agency based in Sterling,VA, which doesnot do advertising.</h2>
                 <div class="text">Because classic advertising hardly arouses interest anymore. Instead, we make stories that get under your skin, stick in your memory, and ensure your brand's offer becomes unforgettable.</div>
               </div>
               <div class="list-info-box">

@@ -19,6 +19,8 @@
     @livewireStyles
 </head>
 <body>
+<!-- Inside the <body> of your main layout file -->
+<audio id="globalNotificationSound" src="{{ asset('assets/notify.mp3') }}" preload="auto"></audio>
 
     <!-- DARK HEADER -->
 <header class="bg-slate-900 text-white shadow-lg" style="min-height: 100px; display: flex; align-items: center; padding: 0;">
@@ -27,7 +29,7 @@
         <a href="/" class="d-flex align-items-center" style="text-decoration: none; padding: 0; margin-left: -10px;">
             <img src="{{ asset('assets/images/company-logos/Click_vision.png') }}" 
                  alt="Click Vision Logo" 
-                 style="height: 100px; width: auto; object-fit: contain; display: block; transform: scale(1.1); transform-origin: left center;">
+                 style="height: 60px; width: auto; object-fit: contain; display: block; transform: scale(1.1); transform-origin: left center;">
         </a>
     <!-- CRITICAL: The hidden Google Translate engine placeholder -->
     <div id="google_translate_element" style="display:none"></div>
@@ -126,24 +128,26 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     /**
-     * 1. Loader Control
-     * Toggles the searching GIF and resets progress bar animations.
+     * 0. Sound Helper
      */
-    window.addEventListener('show-loader', () => {
-        const alpineEl = document.querySelector('[x-data]');
-        if (alpineEl) Alpine.$data(alpineEl).loadingSet = true;
-    });
-
-    window.addEventListener('hide-loader', () => {
-        const alpineEl = document.querySelector('[x-data]');
-        if (alpineEl) Alpine.$data(alpineEl).loadingSet = false;
-    });
+    function playNotificationSound() {
+        const sound = document.getElementById('notificationSound');
+        if (sound) {
+            sound.currentTime = 0; 
+            sound.play().catch(e => console.warn("Audio blocked."));
+        }
+    }
 
     /**
-     * 2. Toast Helper Function
-     * Keeps code clean and reusable for both Events and Session Flashes.
+     * 1. Updated Toast Helper
+     * Added 'withSound' parameter to prevent duplicate sounds on Submit.
      */
-    function fireToast(type, message) {
+    function fireToast(type, message, withSound = true) {
+        // Only play if withSound is true
+        if (withSound) {
+            playNotificationSound();
+        }
+
         const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
@@ -165,33 +169,66 @@
         });
     }
 
-    /**
-     * 3. Livewire Alert Listener
-     * Handles instant notifications (Frozen account, Locked set, etc.)
-     */
     window.addEventListener('alert', event => {
-        const data = Array.isArray(event.detail) ? event.detail[0] : event.detail; 
-        fireToast(data.type, data.message);
-    });
+    /**
+     * EXTRACT DATA SAFELY
+     * Livewire 3 often wraps data in event.detail[0] if dispatched with an array, 
+     * or event.detail if dispatched with named parameters.
+     */
+    let data = event.detail;
+    if (Array.isArray(data)) {
+        data = data[0];
+    }
+
+    // Now data.type and data.message will have the correct words
+    const type = data.type || 'info';
+    const message = data.message || '';
+
+    // Play sound unless explicitly told to be silent
+    // This allows your "Welcome" alert to play sound automatically
+    const shouldPlay = (data.silent === undefined || data.silent === false);
+
+    fireToast(type, message, shouldPlay);
+});
 
     /**
-     * 4. Session Flash Listener (The "Redirect" Fix)
-     * This checks for Laravel session messages when a new page loads.
+     * 3. Session Flash Listener
      */
     document.addEventListener('DOMContentLoaded', () => {
         @if(session()->has('success'))
             fireToast('success', "{{ session('success') }}");
         @endif
-
         @if(session()->has('error'))
             fireToast('error', "{{ session('error') }}");
         @endif
-        
-        @if(session()->has('warning'))
-            fireToast('warning', "{{ session('warning') }}");
-        @endif
     });
+
+    // Existing Loader Control...
+    window.addEventListener('show-loader', () => {
+        const alpineEl = document.querySelector('[x-data]');
+        if (alpineEl) Alpine.$data(alpineEl).loadingSet = true;
+    });
+    window.addEventListener('hide-loader', () => {
+        const alpineEl = document.querySelector('[x-data]');
+        if (alpineEl) Alpine.$data(alpineEl).loadingSet = false;
+    });
+    /**
+ * 5. Swat-Toast Listener
+ * specifically for the 'swal-toast' event dispatched in submittask
+ */
+window.addEventListener('swal-toast', event => {
+    // Livewire 3 detail extraction
+    const data = Array.isArray(event.detail) ? event.detail[0] : event.detail; 
+    
+    /**
+     * We pass 'false' for the 3rd parameter (withSound) 
+     * because your Submit button is already playing a sound.
+     */
+    fireToast(data.icon, data.title, shouldPlay); 
+});
+
 </script>
+
 
 
 <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>

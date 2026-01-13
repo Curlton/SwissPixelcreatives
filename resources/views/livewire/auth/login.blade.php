@@ -1,15 +1,19 @@
 <div>
-    <section class="page-title" style="background-image: url({{ asset('home/images/background/page-title.jpg') }}); padding: 100px 0;">
-    <div class="auto-container">
-        <div class="title-outer text-center">
-            <h1 class="title" style="color: white;">Secure Login</h1>
-            <ul class="page-breadcrumb">
-                <li><a href="/">Home</a></li>
-                <li style="color: rgba(255,255,255,0.7);">Portal Access</li>
-            </ul>
+     <section class="page-title pt-5" 
+    style="background-image: url({{ asset('home/images/background/page-title.jpg') }}); 
+           padding: 220px 0 150px 0; 
+           background-size: cover; 
+           background-position: center;">
+        <div class="auto-container">
+            <div class="title-outer text-center" style="margin-top: 130px">
+                <h1 class="title" style="color: white; font-weight: 800;">Secure Login</h1>
+                <ul class="page-breadcrumb">
+                    <li><a href="/">Home</a></li>
+                    <li style="color: rgba(255,255,255,0.7);">Portal Access</li>
+                </ul>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
 <section class="ks-service-area" style="background: #f4f7f6; padding: 60px 0 100px;">
     <div class="auto-container">

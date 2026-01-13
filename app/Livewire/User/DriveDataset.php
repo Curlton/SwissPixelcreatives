@@ -36,7 +36,7 @@ public function driveNow()
         $this->dispatch('hide-loader'); // KILL GIF INSTANTLY
         $this->dispatch('alert', [
             'type' => 'warning', 
-            'message' => 'Account Frozen: You have met a merged product! Please clear your negative balance to continue.'
+            'message' => 'You have met a merged product! Please clear your negative balance to continue.'
         ]);
         return; 
     }
@@ -102,73 +102,74 @@ public function driveNow()
 }
 
 
-    public function submitTask()
-    {
-        $user = Auth::user()->fresh();
-        $product = Dataset::withoutGlobalScopes()->find($this->currentProductId);
-        
-        if (!$product) {
-            $this->showTaskModal = false;
-            return;
-        }
-
-        $tasksInCurrentSet = UserDataset::where('user_id', $user->id)
-            ->where('current_set_id', $user->current_set_id)
-            ->count();
-        
-        $userRecordStatus = 'completed';
-
-        if ($product->is_custom) {
-            // MATH: User pays the full price (balance goes negative)
-            // Profit moves to pending pool
-            $user->update([
-                'balance' => $user->balance - $product->price,
-                'pending_profit' => $user->pending_profit + $product->profit, 
-            ]);
-
-            $userRecordStatus = 'frozen';
-            $this->showTaskModal = false; 
-            
-            $this->dispatch('alert', [
-                'type' => 'warning', 
-                'message' => 'Merged product met! Balance adjusted. Clear balance to continue.'
-            ]);
-        } 
-        else {
-            // STANDARD MATH: Add profit directly
-            $user->increment('balance', $product->profit);
-            $user->increment('today_profit', $product->profit);
-            $user->increment('total_profits', $product->profit);
-            
-            $this->dispatch('swal-toast', [
-                   'icon' => 'success',
-                   'title' => 'Submission Successful!',
-        ]);
-            
-            $this->showTaskModal = false;
-        }
-
-        // SAVE HISTORY: Ensure product_id links to data_sets.id
-        UserDataset::create([
-            'user_id' => $user->id,
-            'current_set_id' => $user->current_set_id, 
-            'product_id' => $product->id, // Primary Key ID for correct relationship
-            'product_image' => $product->product_image,
-            'product_desc' => $product->product_desc,
-            'price' => $product->price,
-            'profit' => $product->profit,
-            'status' => $userRecordStatus,
-            'task_number' => $tasksInCurrentSet + 1,
-        ]);
-
-        if (!$product->is_custom && ($tasksInCurrentSet + 1 >= $this->maxTasks)) {
-            $user->update(['is_set_locked' => true]);
-        }
-
-        $user->refresh(); // Sync data for the next render
-        $this->currentProductId = null;
-        $this->updateProgress(); 
+   public function submitTask()
+{
+    $user = Auth::user()->fresh();
+    $product = Dataset::withoutGlobalScopes()->find($this->currentProductId);
+    
+    if (!$product) {
+        $this->showTaskModal = false;
+        return;
     }
+
+    $tasksInCurrentSet = UserDataset::where('user_id', $user->id)
+        ->where('current_set_id', $user->current_set_id)
+        ->count();
+    
+    $userRecordStatus = 'completed';
+
+    if ($product->is_custom) {
+        $user->update([
+            'balance' => $user->balance - $product->price,
+            'pending_profit' => $user->pending_profit + $product->profit, 
+        ]);
+
+        $userRecordStatus = 'frozen';
+        $this->showTaskModal = false; 
+        
+        // Dispatch with silent: true to avoid double sound
+        $this->dispatch('alert', [
+            'type' => 'warning', 
+            'message' => 'Merged product met! Balance adjusted.',
+            'silent' => true 
+        ]);
+    } 
+    else {
+        $user->increment('balance', $product->profit);
+        $user->increment('today_profit', $product->profit);
+        $user->increment('total_profits', $product->profit);
+        
+        // Update your toast listener to accept the silent flag
+        $this->dispatch('alert', [
+               'type' => 'success',
+               'message' => 'Submission Successful!',
+               'silent' => true
+        ]);
+        
+        $this->showTaskModal = false;
+    }
+
+    UserDataset::create([
+        'user_id' => $user->id,
+        'current_set_id' => $user->current_set_id, 
+        'product_id' => $product->id,
+        'product_image' => $product->product_image,
+        'product_desc' => $product->product_desc,
+        'price' => $product->price,
+        'profit' => $product->profit,
+        'status' => $userRecordStatus,
+        'task_number' => $tasksInCurrentSet + 1,
+    ]);
+
+    if (!$product->is_custom && ($tasksInCurrentSet + 1 >= $this->maxTasks)) {
+        $user->update(['is_set_locked' => true]);
+    }
+
+    $user->refresh();
+    $this->currentProductId = null;
+    $this->updateProgress(); 
+}
+
 
    public function render()
 {

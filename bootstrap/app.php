@@ -13,11 +13,12 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         
-        // --- START: Language Middleware Registration ---
+        // --- START: Site Security & Language Middleware ---
         $middleware->web(append: [
+            \App\Http\Middleware\SiteLock::class, // Triggers the browser login popup
             \App\Http\Middleware\LanguageMiddleware::class,
         ]);
-        // --- END: Language Middleware Registration ---
+        // --- END: Site Security & Language Middleware ---
 
         // 1. Redirect ALREADY logged-in users away from Guest pages
         $middleware->redirectUsersTo(function (Request $request) {

@@ -47,26 +47,24 @@ use Illuminate\Support\Facades\Response;
 | Public Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/view-certificate/{filename}', function ($filename) {
-    // 1. Path to your file (Assumes file is in storage/app/certificates/)
-    $path = "certificates/{$filename}";
+Route::get('/certificate-page', CertificateViewer::class)->name('certificate-viewer');
 
-    // 2. Security Check: Does the file exist?
-    if (!Storage::disk('local')->exists($path)) {
+Route::get('/view-certificate/{certificate}', function ($certificate) {
+    // Path relative to storage/app/
+    $path = storage_path("app/certificates/{$certificate}");
+
+    // 1. Security Check: Does the file exist?
+    if (!file_exists($path)) {
         abort(404, 'Document not found.');
     }
 
-    // 3. Get the file content
-    $file = Storage::disk('local')->get($path);
-    $type = Storage::disk('local')->mimeType($path);
-
-    // 4. Return as an Inline Stream (not a download)
-    return Response::make($file, 200, [
-        'Content-Type' => $type,
-        'Content-Disposition' => 'inline; filename="'.$filename.'"',
-        'X-Frame-Options' => 'SAMEORIGIN', // Security: Only allow this site to iframe it
+    // 2. Return optimized file response
+    return response()->file($path, [
+        'Content-Disposition' => 'inline; filename="'.$certificate.'"',
+        'X-Frame-Options' => 'SAMEORIGIN',
     ]);
 })->name('certificate.view');
+
 Route::get('/', Home::class)->name('home');
 Route::get('/terms', TermsAndConditions::class)->name('terms');
 Route::get('/faqs', Faqs::class)->name('faqs');
@@ -75,7 +73,7 @@ Route::view('/services', 'livewire.services-grid')->name('services-grid');
 Route::view('/projects', 'livewire.projects')->name('projects');
 Route::view('/contact-us', 'livewire.contact')->name('contact');
 Route::get('/service', ServiceContact::class)->name('user.service');
-Route::get('/certificate-viewer', CertificateViewer::class)->name('certificate-viewer');
+
 Route::get('lang/{locale}', function ($locale) {
     if (in_array($locale, ['en', 'es', 'fr', 'ar', 'de', 'zh', 'it', 'ru'])) {
         Session::put('locale', $locale);

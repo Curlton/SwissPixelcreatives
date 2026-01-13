@@ -4156,8 +4156,8 @@ Main Header
   padding:10px 0;
 }
 .main-header .logo img {
-  max-width: 250px;
-  height: 80px;
+  max-width: 200px;
+  height: 60px;
   display: block;
   width: auto;
 }

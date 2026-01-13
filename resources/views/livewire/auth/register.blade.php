@@ -1,7 +1,11 @@
 <div>
-    <section class="page-title pt-5" style="background-image: url({{ asset('home/images/background/page-title.jpg') }}); padding: 80px 0;">
+     <section class="page-title pt-5" 
+    style="background-image: url({{ asset('home/images/background/page-title.jpg') }}); 
+           padding: 220px 0 150px 0; 
+           background-size: cover; 
+           background-position: center;">
         <div class="auto-container">
-            <div class="title-outer text-center">
+            <div class="title-outer text-center" style="margin-top: 130px">
                 <h1 class="title" style="color: white; font-weight: 800;">Join Our Community</h1>
                 <ul class="page-breadcrumb">
                     <li><a href="/">Home</a></li>

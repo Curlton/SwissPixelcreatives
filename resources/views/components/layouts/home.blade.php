@@ -16,7 +16,7 @@
 
     <!-- Stylesheets (Asset versioning is recommended for 2026) -->
     <link href="{{ asset('home/css/bootstrap.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('home/css/style.css') }}" rel="stylesheet" />
+    <link href="{{ asset('home/css/style.css') }}?v=1.1" rel="stylesheet" />
     
     <!-- Favicons -->
     <link rel="shortcut icon" href="{{ asset('home/images/favicon.png') }}" type="image/x-icon" />
@@ -101,7 +101,7 @@ function googleTranslateElementInit() {
                 <button class="ui-btn search-btn">
                   <i class="icon fal fa-search"></i>
                 </button>
-                <a href="{{ route('contact') }}" class="theme-btn btn-style-one">
+                <a href="{{ route('user.service') }}" class="theme-btn btn-style-one">
                   <span class="btn-arrow-left">
                     <i class="far fa-chevron-right"></i>
                   </span>
@@ -191,7 +191,7 @@ function googleTranslateElementInit() {
               <span class="icon"><i aria-hidden="true" class="fas fa-phone-alt"></i></span>
               <span class="info">
                 Call Anytime
-                <strong>+1 850 693-1231 </strong>
+                <strong>+1 (414) 204-9767 </strong>
               </span>
             </a>
           </div>
@@ -248,8 +248,8 @@ function googleTranslateElementInit() {
               <div class="footer-widget about-widget wow fadeInLeft">
                 <div class="widget-content">
                   <div class="contact-area">
-                    <div class="mb-3"><a class="phone" href="tel:01750050088">+1 (850) 693-1231</a></div>
-                    <div><a class="mail" href="mailto:support@swisspixel.com">support@swisspixelcreatives.com</a></div>
+                    <div class="mb-3"><a class="phone" href="tel:01750050088">+1 (414) 204-9767</a></div>
+                    <div><a class="mail" href="mailto:support@swisspixel.com">support@pixelcreatives.com</a></div>
                   </div>
                   <div class="social-widget mt-30">
                     <ul class="social-icon-list1 mb-5 mb-lg-0">
