@@ -62,7 +62,7 @@ class UsdtWithdraw extends Component
 
         // 6. Success Feedback
         // The updated site.blade.php script will pick this 'success' flash up after redirect
-        session()->flash('success', 'Withdrawal request submitted! Pending admin review.');
+        session()->flash('success', 'Withdrawal request submitted! Pending Accounts team approval.');
 
         return redirect()->route('dashboard');
     }

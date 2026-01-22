@@ -2,7 +2,7 @@
 namespace App\Livewire\Admin\Users;
 
 use App\Models\User;
-use App\Models\DataSet;
+use App\Models\Dataset;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 class CustomDatasetPicker extends Component
@@ -17,48 +17,51 @@ class CustomDatasetPicker extends Component
 public function mount(User $user)
 {
     $this->user = $user;
-
-    // Fetch unique product names (stored in product_id column)
-    // withoutGlobalScopes() ensures you see all entries despite any user-level filters
-    $this->productList = \App\Models\DataSet::withoutGlobalScopes()
-        ->whereNotNull('product_id')
-        ->where('product_id', '!=', '') // Ensure empty strings are excluded
-        ->distinct()
-        ->pluck('product_id'); // Returns a simple array of strings: ['Laptop', 'Phone', etc.]
+    // Do not load products yet; wait for a set to be selected
+    $this->productList = [];
 }
 
 
 
-   public function updatedRows($value, $field)
+  public function updatedRows($value, $field)
 {
-    // $field looks like "rows.0.product_id"
     if (str_ends_with($field, '.product_id')) {
-        // Extract the middle part which is the index
         $parts = explode('.', $field);
-        $index = (int) $parts[1]; // Ensure this is an integer
+        $index = (int) $parts[1];
 
         if ($value) {
-            // Find the latest entry for this product string
-            $existing = \App\Models\DataSet::withoutGlobalScopes()
+            $existing = \App\Models\Dataset::withoutGlobalScopes()
                 ->where('product_id', $value)
-                ->latest()
+                ->where('is_custom', false) // Always pull from standard pool
                 ->first();
 
             if ($existing) {
-                // Update the EXACT row index that was changed
                 $this->rows[$index]['price'] = $existing->price;
-                $this->rows[$index]['profit'] = $existing->profit;
+                // Standard items have 0 profit in DB, Admin must enter custom profit here
+                $this->rows[$index]['profit'] = 0; 
             }
         }
     }
 }
 
 
+
     public function showForm($setNumber)
-    {
-        $this->selectedSet = $setNumber;
-        $this->rows = [['product_id' => '', 'price' => 0, 'profit' => 0]];
-    }
+{
+    $this->selectedSet = $setNumber;
+
+    // 2026 FILTER LOGIC: Fetch only standard products matching this set number
+    $this->productList = \App\Models\Dataset::withoutGlobalScopes()
+        ->where('is_custom', false)
+        ->where('set_number', $setNumber)
+        ->whereNotNull('product_id')
+        ->where('product_id', '!=', '')
+        ->distinct()
+        ->pluck('product_id');
+
+    // Initialize rows with an empty entry
+    $this->rows = [['product_id' => '', 'price' => 0, 'profit' => 0]];
+}
 
     public function addRow()
     {
@@ -72,8 +75,7 @@ public function mount(User $user)
         unset($this->rows[$index]);
         $this->rows = array_values($this->rows);
     }
-
- public function saveDataset()
+public function saveDataset()
 {
     $this->validate([
         'rows.*.product_id' => 'required',
@@ -82,30 +84,31 @@ public function mount(User $user)
     ]);
 
     foreach ($this->rows as $row) {
-        // 1. Find the ORIGINAL item from the general pool
-        $original = DataSet::withoutGlobalScopes()
+        // 1. Find the ORIGINAL item to copy its description and image
+        $original = Dataset::withoutGlobalScopes()
             ->where('product_id', $row['product_id'])
+            ->where('is_custom', false) // Ensure we copy a standard item
             ->first();
 
         if ($original) {
-            // 2. Create the CUSTOM item ONLY in the data_sets table
-            // We do NOT create the UserDataset here.
-            DataSet::create([
+            // 2. Create the CUSTOM override
+            Dataset::create([
                 'user_id'       => $this->user->id,
-                'original_id'   => $original->id,
+                'original_id'   => $original->id, // This links it to the position
                 'product_id'    => $row['product_id'],
-                'price'         => $row['price'],
-                'profit'        => $row['profit'],
+                'price'         => $row['price'],   // Admin's manual price
+                'profit'        => $row['profit'],  // Admin's manual profit
                 'product_desc'  => $original->product_desc,
                 'product_image' => $original->product_image,
-                'set_number'    => $this->selectedSet, // This acts as the trigger task number
-                'status'        => 'pending',
+                // CRITICAL: set_number must be the CYCLE (1, 2, or 3) 
+                // to match the user's current_set_id
+                'set_number'    => $original->set_number, 
                 'is_custom'     => true,
             ]);
         }
     }
 
-    session()->flash('message', "Custom items assigned. They will freeze when the user encounters them.");
+    session()->flash('message', "Custom items assigned to Set " . $original->set_number);
     return redirect()->route('admin.users.dataset', $this->user->id);
 }
 

@@ -54,7 +54,7 @@
                         @forelse($users as $index => $user)
                         <tr wire:key="user-row-{{ $user->id }}" class="hover:bg-gray-50/80 transition">
                             <td class="p-4">{{ $users->firstItem() + $index }}</td>
-                            <td class="p-4">{{ $user->created_at->format('d M, Y') }}</td>
+                            <td class="p-4">{{ $user->created_at->format('d M, Y H:i') }}</td>
                             <td class="p-4 font-bold text-gray-800">{{ $user->username }}</td>
                             <!-- Password column in your AllUsers table -->
 <td class="p-4">

@@ -8,19 +8,21 @@
     @endif
 
     <!-- HEADER -->
-    <div class="mb-2">
-        <h2 class="text-3xl font-black text-slate-900 tracking-tighter uppercase">
-            {{ $user->username ?? $user->name }}
-        </h2>
-        <div class="flex items-center gap-2 mt-1">
-            <span class="px-2 py-0.5 bg-blue-600 text-white rounded text-[10px] font-black uppercase tracking-widest">
-                {{ $user->membership_level ?? 'VIP 1 BRONZE' }}
-            </span>
-            <span class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">
-                User ID: #{{ $user->id }}
-            </span>
-        </div>
+<div class="mb-2">
+    <h2 class="text-3xl font-black text-slate-900 tracking-tighter uppercase">
+        {{ $user->username ?? $user->name }}
+    </h2>
+    <div class="items-center gap-2 mt-1 flex">
+        <!-- Accessing the level name through the 'level' relationship -->
+        <span class="px-2 py-0.5 bg-blue-600 text-white rounded text-[10px] font-black uppercase tracking-widest">
+            {{ $user->level->level_name ?? 'VIP 1 BRONZE' }}
+        </span>
+        <span class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">
+            User ID: #{{ $user->id }}
+        </span>
     </div>
+</div>
+
 
     <!-- FINANCIALS TABLE -->
     <div class="mb-8 overflow-hidden rounded-xl border border-slate-200 shadow-sm mt-4">
@@ -67,14 +69,16 @@
         </a>
 
         <div class="flex flex-col">
-            <select wire:model="selectedMembership" wire:change="updateMembership" class="px-4 py-2 bg-white border border-slate-200 text-[11px] font-black rounded-lg">
-                <option value="VIP 1 BRONZE">VIP 1 BRONZE</option>
-                <option value="VIP 2 SILVER">VIP 2 SILVER</option>
-                <option value="VIP 3 GOLD">VIP 3 GOLD</option>
-                <option value="VIP 4 PLATINUM">VIP 4 PLATINUM</option>
-                <option value="VIP 5 DIAMOND">VIP 5 DIAMOND</option>
-            </select>
-        </div>
+    <select wire:model="selectedMembership" wire:change="updateMembership" class="px-4 py-2 bg-white border border-slate-200 text-[11px] font-black rounded-lg">
+        <!-- The values MUST be the IDs from your membership_levels table -->
+        <option value="1">VIP 1 BRONZE</option>
+        <option value="2">VIP 2 SILVER</option>
+        <option value="3">VIP 3 GOLD</option>
+        <option value="4">VIP 4 PLATINUM</option>
+        <option value="5">VIP 5 DIAMOND</option>
+    </select>
+</div>
+
     </div>
 
     <!-- ACTIVITY HISTORY -->

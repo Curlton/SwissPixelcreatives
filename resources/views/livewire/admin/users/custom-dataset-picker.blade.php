@@ -24,22 +24,23 @@
             <div class="space-y-4">
                 @foreach($rows as $index => $row)
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-slate-50 border border-slate-200 rounded-xl" wire:key="row-{{ $index }}">
-                        
-                        <!-- Product Selection Dropdown (Forced Selection) -->
-                        <div>
-                            <label class="text-[10px] font-black text-slate-400 uppercase">Select Product ID</label>
-                            <select wire:model.live="rows.{{ $index }}.product_id" 
-        class="w-full mt-1 border-slate-200 rounded text-sm font-bold p-2 focus:ring-blue-500">
-    <option value="">-- Select Product --</option>
-    @forelse($productList as $productName)
-        {{-- Since the name is the ID, both the value and display text are the same --}}
-        <option value="{{ $productName }}">{{ $productName }}</option>
-    @empty
-        <option disabled>No products found in database</option>
-    @endforelse
-</select>
+                        <!-- Inside Phase 2: Selection Form -->
+<div>
+    <label class="text-[10px] font-black text-slate-400 uppercase">Select Product from Set {{ $selectedSet }}</label>
+    <select wire:model.live="rows.{{ $index }}.product_id" 
+            class="w-full mt-1 border-slate-200 rounded text-sm font-bold p-2 focus:ring-blue-500">
+        <option value="">-- Select Product --</option>
+        @forelse($productList as $productName)
+            <option value="{{ $productName }}">{{ $productName }}</option>
+        @empty
+            <option disabled>No products found in Set {{ $selectedSet }}</option>
+        @endforelse
+    </select>
+</div>
 
-                        </div>
+                       
+
+                        
 
                         <!-- Price (Auto-filled but editable) -->
                         <div>
@@ -73,9 +74,13 @@
                     <span class="text-slate-400 text-[10px] font-bold uppercase italic">Maximum reached</span>
                 @endif
 
-                <button wire:click="saveDataset" class="px-10 py-3 bg-slate-900 hover:bg-blue-600 text-white font-black text-xs rounded-xl transition-all shadow-xl uppercase">
-                    Save Complete Set
+                <button wire:click="saveDataset" 
+                        wire:loading.attr="disabled"
+                        class="px-10 py-3 bg-slate-900 hover:bg-blue-600 text-white font-black text-xs rounded-xl transition-all shadow-xl uppercase disabled:opacity-50">
+                        <span wire:loading.remove wire:target="saveDataset">Save Complete Set</span>
+                        <span wire:loading wire:target="saveDataset text-[10px]">Processing...</span>
                 </button>
+
             </div>
         </div>
     @endif

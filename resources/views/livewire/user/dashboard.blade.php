@@ -11,22 +11,20 @@
             overflow: hidden; /* Ensures background stays inside the radius */">
     
     <!-- Centered Username -->
-    <div class="text-center mb-5">
-        <!-- Icon background set to a slightly darker blue to pop against the pale blue -->
-        <div class="d-inline-block p-3 rounded-circle bg-blue-100 mb-3 shadow-sm" style="border: 1px solid #d4af37;">
-            <i class="ri-user-smile-line fs-1 text-primary"></i>
-        </div>
-        <h2 class="fw-bold text-dark mb-0">{{ auth()->user()->username ?? 'Guest' }}</h2>
-       <span class="badge px-3 rounded-pill shadow-md" 
-      style="background-color: #1e293b; /* Dark Navy for high contrast */
-             color: #ffffff; 
-             border: 1px solid #d4af37; /* Gold border to match the card */
-             font-weight: 600;
-             letter-spacing: 0.5px;">
-    {{ auth()->user()->membership_level ?? 'VIP 1 Bronze' }}
-</span>
-
+<div class="text-center mb-5">
+    <div class="d-inline-block p-3 rounded-circle bg-blue-100 mb-3 shadow-sm" style="border: 1px solid #d4af37;">
+        <i class="ri-user-smile-line fs-1 text-primary"></i>
     </div>
+    <h2 class="fw-bold text-dark mb-0">{{ auth()->user()->username ?? 'Guest' }}</h2>
+    
+    <!-- Dynamic Level Badge -->
+    <span class="badge px-3 rounded-pill shadow-md" 
+          style="background-color: #1e293b; color: #ffffff; border: 1px solid #d4af37; font-weight: 600; letter-spacing: 0.5px;">
+        {{ auth()->user()->level->level_name ?? 'VIP 1 Bronze' }}
+    </span>
+    
+</div>
+
 
     <!-- Stats: Balance & Profit -->
     <div class="row g-3 mb-5 justify-content-center">
@@ -124,96 +122,103 @@
 
 </div>
     
-   <!-- SUB-DIV 2: MEMBERSHIP LEVELS -->
-<div class="card border-0 shadow-lg overflow-hidden mt-4" 
-     style="border-radius: 2rem; border: 2px solid #d4af37; background-color: #f0f7ff;">
-    
-    <div class="card-header border-0 py-4 px-4 d-flex justify-content-between align-items-center" style="background: transparent;">
-        <h6 class="fw-black mb-0 text-dark uppercase tracking-wider" style="font-size: 0.9rem;">
-            <i class="ri-vip-crown-line me-2 text-warning fs-5"></i>Membership Levels
-        </h6>
-        <span class="badge rounded-pill px-3 py-2 shadow-sm" 
-              style="background-color: #1e293b; color: #ffffff; font-size: 0.7rem;">
-            EXCLUSIVE BENEFITS
-        </span>
-    </div>
+<!-- SUB-DIV 2: MEMBERSHIP LEVELS -->
+<div class="card-body p-3">
+    <div class="list-group list-group-flush gap-3">
+        @php
+            // Your exact hardcoded array for visual formality
+            $levels = [
+                ['id' => 1, 'name' => 'VIP 1 BRONZE > $100',   'pct' => '0.8%', 'bg' => 'linear-gradient(135deg, #ffffff 0%, #fff4ed 100%)', 'border' => '#cd7f32', 'text' => '#5c2d13', 'icon' => 'ri-medal-line'],
+                ['id' => 2, 'name' => 'VIP 2 SILVER > $500',   'pct' => '3.0%', 'bg' => 'linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)', 'border' => '#475569', 'text' => '#1e293b', 'icon' => 'ri-medal-fill'],
+                ['id' => 3, 'name' => 'VIP 3 GOLD > $1000',     'pct' => '4.5%', 'bg' => 'linear-gradient(135deg, #ffffff 0%, #fffbeb 100%)', 'border' => '#b45309', 'text' => '#78350f', 'icon' => 'ri-vip-crown-2-line'],
+                ['id' => 4, 'name' => 'VIP 4 PLATINUM > $3000', 'pct' => '6.0%', 'bg' => 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)', 'border' => '#0f172a', 'text' => '#020617', 'icon' => 'ri-vip-crown-fill'],
+                ['id' => 5, 'name' => 'VIP 5 DIAMOND > $6000',  'pct' => '8.5%', 'bg' => 'linear-gradient(135deg, #ffffff 0%, #f5f3ff 100%)', 'border' => '#5b21b6', 'text' => '#2e1065', 'icon' => 'ri-vip-diamond-line'],
+            ];
+            
+            $currentUserRank = auth()->user()->membership_id ?? 1;
+        @endphp
 
-    <div class="card-body p-3">
-        <div class="list-group list-group-flush gap-3">
-            @php
-                $levels = [
-                    ['id' => 1, 'name' => 'VIP 1 BRONZE', 'pct' => '0.8%', 'bg' => 'linear-gradient(135deg, #ffffff 0%, #fff4ed 100%)', 'border' => '#cd7f32', 'text' => '#5c2d13'],
-                    ['id' => 2, 'name' => 'VIP 2 SILVER', 'pct' => '3.0%', 'bg' => 'linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)', 'border' => '#475569', 'text' => '#1e293b'],
-                    ['id' => 3, 'name' => 'VIP 3 GOLD', 'pct' => '4.5%', 'bg' => 'linear-gradient(135deg, #ffffff 0%, #fffbeb 100%)', 'border' => '#b45309', 'text' => '#78350f'],
-                    ['id' => 4, 'name' => 'VIP 4 PLATINUM', 'pct' => '6.0%', 'bg' => 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)', 'border' => '#0f172a', 'text' => '#020617'],
-                    ['id' => 5, 'name' => 'VIP 5 DIAMOND', 'pct' => '8.5%', 'bg' => 'linear-gradient(135deg, #ffffff 0%, #f5f3ff 100%)', 'border' => '#5b21b6', 'text' => '#2e1065'],
-                ];
-                
-                // Get user rank (e.g., 'VIP 1 BRONZE' -> 1)
-                $currentUserLevelName = strtoupper(auth()->user()->membership_level ?? 'VIP 1 BRONZE');
-                $currentUserRank = 1; // Default
-                foreach($levels as $l) { if($l['name'] === $currentUserLevelName) $currentUserRank = $l['id']; }
+        @foreach($levels as $level)
+            @php 
+                $isActive = ($currentUserRank == $level['id']);
+                $isLocked = ($level['id'] > $currentUserRank);
+                // Define icon fallback if not provided in original array
+                $icon = $level['icon'] ?? 'ri-vip-crown-line'; 
             @endphp
 
-            @foreach($levels as $level)
-                @php 
-                    $isActive = ($currentUserLevelName === $level['name']);
-                    $isLocked = ($level['id'] > $currentUserRank);
-                @endphp
-
-                @if($isLocked)
-                    <!-- LOCKED TIER STYLE -->
-                    <div class="list-group-item p-4 rounded-4 border-0 shadow-sm opacity-50" 
-                         style="background: #e2e8f0; border: 1px dashed #94a3b8 !important; cursor: not-allowed;">
+            @if($isLocked)
+                <!-- LOCKED TIER STYLE -->
+                <div class="list-group-item p-4 rounded-4 border-0 shadow-sm opacity-50" 
+                     style="background: #e2e8f0; border: 1px dashed #94a3b8 !important; cursor: not-allowed;">
+                    <div class="d-flex align-items-center justify-content-between gap-3">
                         <div class="d-flex align-items-center gap-3">
                             <div class="rounded-circle d-flex align-items-center justify-content-center bg-white" 
                                  style="width: 54px; height: 54px; border: 2px solid #94a3b8;">
                                 <i class="ri-lock-password-line fs-3 text-muted"></i>
                             </div>
-                            <div class="flex-grow-1">
-                                <span class="fw-bold d-block text-muted mb-0">{{ $level['name'] }}</span>
-                                <span class="badge bg-slate-200 text-slate-600 rounded-pill px-2 py-1" style="font-size: 0.6rem;">LOCKED</span>
-                            </div>
-                            <div class="text-end text-muted">
-                                <span class="d-block fw-bold fs-3">{{ $level['pct'] }}</span>
+                            <div>
+                                <h6 class="mb-0 fw-bold text-muted">{{ $level['name'] }}</h6>
+                                <small class="text-muted">Locked - Upgrade required</small>
                             </div>
                         </div>
+                        <!-- Hardcoded commission figure at extreme right (muted) -->
+                        <span class="badge bg-light text-muted border shadow-sm" style="font-size: 0.7rem;">
+                            Comm: {{ $level['pct'] }}
+                        </span>
                     </div>
-                @else
-                    <!-- UNLOCKED/ACTIVE TIER STYLE -->
-                    <a href="{{ route('user.drive') }}" wire:navigate 
-                       class="list-group-item list-group-item-action p-4 rounded-4 border-0 shadow-sm transition-all"
-                       style="background: {{ $level['bg'] }}; border: 2px solid {{ $isActive ? '#d4af37' : $level['border'] }} !important;">
+                </div>
+            @else
+                <!-- ACTIVE/UNLOCKED TIER STYLE (Added shadow-lg) -->
+                <div class="list-group-item p-4 rounded-4 border-0 shadow-lg position-relative overflow-hidden mb-2" 
+                     style="background: {{ $level['bg'] }}; border: 2px solid {{ $level['border'] }} !important;">
+                    
+                    @if($isActive)
+    <!-- Premium Purple Active Plan Badge -->
+    <div class="position-absolute top-0 end-0 px-3 py-1 rounded-bl-4 shadow-sm" 
+         style="background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); /* Indigo to Purple Gradient */
+                color: #ffffff; 
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+                font-size: 0.6rem; 
+                font-weight: 800; 
+                letter-spacing: 0.8px; 
+                text-transform: uppercase;
+                border-left: 1px solid rgba(255,255,255,0.2);
+                border-bottom: 1px solid rgba(255,255,255,0.2);
+                z-index: 10;">
+        <i class="ri-checkbox-circle-fill me-1" style="font-size: 0.7rem;"></i> ACTIVE PLAN
+    </div>
+@endif
+
+
+                    <div class="d-flex align-items-center justify-content-between gap-3">
                         <div class="d-flex align-items-center gap-3">
-                            <div class="rounded-circle d-flex align-items-center justify-content-center bg-white shadow-sm" 
-                                 style="width: 54px; height: 54px; border: 2.5px solid {{ $level['border'] }};">
-                                <i class="{{ $isActive ? 'ri-vip-crown-fill' : 'ri-lock-unlock-line' }} fs-3" style="color: {{ $level['border'] }};"></i>
+                            <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                                 style="width: 54px; height: 54px; background: {{ $level['border'] }}; color: white;">
+                                <i class="{{ $icon }} fs-3"></i>
                             </div>
-                            <div class="flex-grow-1">
-                                <span class="fw-black d-block mb-0" style="color: {{ $level['text'] }}; font-size: 1.1rem;">{{ $level['name'] }}</span>
-                                @if($isActive)
-                                    <span class="badge rounded-pill px-2 py-1 mt-1" style="background: #d4af37; color: #1e293b; font-weight: 800; font-size: 0.65rem;">ACTIVE PLAN</span>
-                                @else
-                                    <span class="text-success small fw-black">UNLOCKED <i class="ri-checkbox-circle-fill"></i></span>
-                                @endif
-                            </div>
-                            <div class="text-end">
-                                <span class="d-block fw-black text-primary fs-3">{{ $level['pct'] }}</span>
-                                <span class="text-dark small fw-bold">Daily Profit</span>
+                            <div>
+                                <h6 class="mb-0 fw-bold" style="color: {{ $level['text'] }};">{{ $level['name'] }}</h6>
+                                <small style="color: {{ $level['text'] }}; opacity: 0.8;">
+                                    {{ $isActive ? 'Your current earning tier' : 'Unlocked benefits' }}
+                                </small>
                             </div>
                         </div>
-                    </a>
-                @endif
-            @endforeach
-        </div>
+
+                        <!-- Hardcoded commission figure at extreme right -->
+                        <span class="badge bg-white text-dark border shadow-sm" style="font-size: 0.7rem;">
+                            Comm: {{ $level['pct'] }}
+                        </span>
+
+                        @if(!$isActive)
+                             <!-- Removed extra check icon -->
+                        @endif
+                    </div>
+                </div>
+            @endif
+        @endforeach
     </div>
 </div>
 
-        
-  
-
-
-    </div>
     <!--FOOTER-->
     <div class="card-footer bg-white border-0 text-center py-4">
         <a href="javascript:void(0);" 

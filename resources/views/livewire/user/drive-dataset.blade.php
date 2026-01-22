@@ -33,13 +33,16 @@
             <div class="col-6">
                 <div class="p-4 bg-white rounded-2xl shadow-md text-center" style="border: 2px solid var(--color-gold-primary);">
                     <small class="text-muted text-uppercase fw-bold d-block mb-1" style="font-size: 0.65rem; letter-spacing: 1px;">Total Balance</small>
-                    <p class="font-black text-blue-600 mb-0" style="font-size: 1rem;">${{ number_format(auth()->user()->balance ?? 0, 2) }}</p>
+                    <p class="font-medium text-blue-600 mb-0">
+                         ${{ number_format(auth()->user()->balance ?? 0, 2) }}
+                    </p>
+
                 </div>
             </div>
             <div class="col-6">
                 <div class="p-4 bg-white rounded-2xl shadow-md text-center" style="border: 2px solid var(--color-gold-primary);">
                     <small class="text-muted text-uppercase fw-bold d-block mb-1" style="font-size: 0.65rem; letter-spacing: 1px;">Today's Profit</small>
-                    <p class="font-black text-brand-secondary mb-0" style="font-size: 1rem;">+${{ number_format(auth()->user()->today_profit ?? 0, 2) }}</p>
+                    <p class="font-medium text-blue-600 mb-0">+${{ number_format(auth()->user()->today_profit ?? 0, 2) }}</p>
                 </div>
             </div>
         </div>
@@ -121,15 +124,20 @@
                         <span class="text-[8px] font-black text-slate-400 uppercase tracking-tighter block">Price</span>
                         <p class="text-sm font-bold text-slate-800">${{ number_format($product->price, 2) }}</p>
                     </div>
+                    
+                    <!-- DYNAMIC PROFIT BOX: Shows $itemProfit (Calculated for standard, Fixed for merged) -->
                     <div class="flex-1 bg-green-50 py-1 px-2 rounded-xl border border-green-100">
-                        <span class="text-[8px] font-black text-green-500 uppercase tracking-tighter block">Profit</span>
-                        <p class="text-sm font-bold text-green-600">+${{ number_format($product->profit, 2) }}</p>
+                        <span class="text-[8px] font-black text-green-500 uppercase tracking-tighter block">
+                            {{ $product->is_custom ? 'Bonus Profit' : 'Profit' }}
+                        </span>
+                        <p class="text-sm font-bold text-green-600">
+                            +${{ number_format($itemProfit, 2) }}
+                        </p>
                     </div>
                 </div>
 
                 <!-- Dual Action Buttons -->
                 <div class="flex gap-3 mt-4">
-                    <!-- Cancel Button -->
                     <button type="button"
                             @click="open = false" 
                             :disabled="isSubmitting"
@@ -138,28 +146,35 @@
                         Cancel
                     </button>
 
-                    <!-- Submit Button -->
-                    
-<button type="button"
-        x-on:click="
-            document.getElementById('submitClickSound').play(); // 1. Play sound immediately
-            isSubmitting = true;                                // 2. Start loading UI
-            setTimeout(() => { 
-                $wire.submitTask().then(() => { 
-                    isSubmitting = false; 
-                    open = false; 
-                }) 
-            }, 3000)" 
-        :disabled="isSubmitting"
-        class="flex-1 py-2 px-2 rounded-pill font-black text-[10px] uppercase tracking-[0.2em] transition-all active:scale-95 disabled:opacity-50"
-        style="border: 2px solid #d4af37; background-color: #1e293b; color: white;">
-    <span>Submit</span>
-</button>
-
+                    <button type="button"
+                            x-on:click="
+                                document.getElementById('submitClickSound').play(); 
+                                isSubmitting = true;                                
+                                setTimeout(() => { 
+                                    $wire.submitTask().then(() => { 
+                                        isSubmitting = false; 
+                                        open = false; 
+                                    }) 
+                                }, 3000)" 
+                            :disabled="isSubmitting"
+                            class="flex-1 py-2 px-2 rounded-pill font-black text-[10px] uppercase tracking-[0.2em] transition-all active:scale-95 disabled:opacity-50 relative overflow-hidden"
+                            style="border: 2px solid #d4af37; background-color: #1e293b; color: white;">
+                        
+                        <!-- 2026 Loading State -->
+                        <span x-show="!isSubmitting">Submit</span>
+                        <span x-show="isSubmitting" class="flex items-center justify-center gap-2">
+                            <svg class="animate-spin h-3 w-3 text-white" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Wait...
+                        </span>
+                    </button>
                 </div>
             </div>
         @endif
     </div>
+
 
     <!-- SUBMISSION PROCESSING OVERLAY (Nested inside x-data to share isSubmitting) -->
     

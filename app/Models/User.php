@@ -20,18 +20,18 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'membership_id',
         'username',
         'phone_no', 
         'email',
         'password',
         'status',
         'referral_code',
-        'membership_level',
         'balance',
         'total_profits',
         'today_profit',
         'referred_by',
-        'membership_level_id',
+        
         'current_set_id', // Must be here
         'is_set_locked',
 
@@ -76,6 +76,10 @@ class User extends Authenticatable
         // Replace 'user_id' if your foreign key in UserDataset is different
         return $this->hasMany(UserDataset::class, 'user_id');
     }
+    public function level()
+{
+    return $this->belongsTo(MembershipLevel::class, 'membership_id');
+}
 
  
 

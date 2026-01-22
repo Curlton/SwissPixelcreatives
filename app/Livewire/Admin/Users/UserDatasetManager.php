@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Users;
 
 use App\Models\User;
 use App\Models\UserDataset;
+use App\Models\MembershipLevel;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Title;
@@ -26,18 +27,27 @@ class UserDatasetManager extends Component
 
     /**
      * Updates the user's membership level
-     */
-    public function updateMembership()
-    {
-        $this->user->membership_level = $this->selectedMembership;
-        $this->user->save();
+    
+ * Updates the user's membership level using the new database structure.
+ */
+public function updateMembership()
+{
+    // 1. Update the membership_id column instead of the old string column
+    $this->user->membership_id = $this->selectedMembership;
+    
+    // 2. Clear any old hardcoded string if it still exists (optional cleanup)
+    // $this->user->membership_level = null; 
 
-        session()->flash('message', "Membership updated to {$this->selectedMembership}");
-    }
+    $this->user->save();
 
-    /**
-     * Toggles the 'Can Play' status
-     */
+    // 3. Fetch the level name from the relationship for a better notification
+    $levelName = \App\Models\MembershipLevel::find($this->selectedMembership)->level_name ?? 'Unknown';
+
+    session()->flash('message', "Membership updated to: {$levelName}");
+}
+
+
+    
     public function toggleCanPlay()
 {
     // Flipping the lock: 1 becomes 0, 0 becomes 1

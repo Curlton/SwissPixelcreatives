@@ -15,9 +15,10 @@
                 <!-- Balance Card -->
                 <div class="bg-blue-50 border border-blue-100 rounded-2xl p-4 mb-6 text-center">
                     <p class="text-xs font-bold text-blue-400 uppercase tracking-widest">Balance in USD</p>
-                    <h3 class="text-3xl font-black text-blue-700 mt-1">
-                        ${{ number_format($balance, 2) }}
-                    </h3>
+                    <p class="text-lg font-normal text-dark-600 mb-0">
+                          ${{ number_format($balance, 2) }}
+                    </p>
+
                 </div>
 
                 <form wire:submit.prevent="withdraw" class="space-y-6">
