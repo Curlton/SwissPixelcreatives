@@ -78,7 +78,7 @@ public function unlockUser($userId)
             })
             ->latest()
             ->withCount('completedDatasets') 
-            ->paginate(15)
+            ->paginate(30)
     ])->layout('components.layouts.admin');
 }
 
