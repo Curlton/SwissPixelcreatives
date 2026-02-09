@@ -24,23 +24,18 @@
             <div class="space-y-4">
                 @foreach($rows as $index => $row)
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-slate-50 border border-slate-200 rounded-xl" wire:key="row-{{ $index }}">
-                        <!-- Inside Phase 2: Selection Form -->
-<div>
-    <label class="text-[10px] font-black text-slate-400 uppercase">Select Product from Set {{ $selectedSet }}</label>
-    <select wire:model.live="rows.{{ $index }}.product_id" 
-            class="w-full mt-1 border-slate-200 rounded text-sm font-bold p-2 focus:ring-blue-500">
-        <option value="">-- Select Product --</option>
-        @forelse($productList as $productName)
-            <option value="{{ $productName }}">{{ $productName }}</option>
-        @empty
-            <option disabled>No products found in Set {{ $selectedSet }}</option>
-        @endforelse
-    </select>
-</div>
-
-                       
-
-                        
+                        <div>
+                            <label class="text-[10px] font-black text-slate-400 uppercase">Select Product from Set {{ $selectedSet }}</label>
+                            <select wire:model.live="rows.{{ $index }}.product_id" 
+                                    class="w-full mt-1 border-slate-200 rounded text-sm font-bold p-2 focus:ring-blue-500">
+                                <option value="">-- Select Product --</option>
+                                @forelse($productList as $productName)
+                                    <option value="{{ $productName }}">{{ $productName }}</option>
+                                @empty
+                                    <option disabled>No products found in Set {{ $selectedSet }}</option>
+                                @endforelse
+                            </select>
+                        </div>
 
                         <!-- Price (Auto-filled but editable) -->
                         <div>
@@ -80,7 +75,48 @@
                         <span wire:loading.remove wire:target="saveDataset">Save Complete Set</span>
                         <span wire:loading wire:target="saveDataset text-[10px]">Processing...</span>
                 </button>
+            </div>
+        </div>
 
+        <!-- NEW: Verification & Management Section -->
+        <div class="mt-12">
+            <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest mb-4">Currently Assigned to this User</h3>
+            <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                <table class="min-w-full divide-y divide-slate-200">
+                    <thead class="bg-slate-50">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-[10px] font-black text-slate-400 uppercase">Set</th>
+                            <th class="px-6 py-4 text-left text-[10px] font-black text-slate-400 uppercase">Product ID</th>
+                            <th class="px-6 py-4 text-left text-[10px] font-black text-slate-400 uppercase">Price</th>
+                            <th class="px-6 py-4 text-left text-[10px] font-black text-slate-400 uppercase">Profit</th>
+                            <th class="px-6 py-4 text-right text-[10px] font-black text-slate-400 uppercase">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        @forelse($assignedCustomProducts as $custom)
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="px-6 py-4 text-xs font-bold text-slate-900">Set {{ $custom->set_number }}</td>
+                                <td class="px-6 py-4 text-xs text-slate-500 font-mono">{{ $custom->product_id }}</td>
+                                <td class="px-6 py-4 text-xs font-bold text-green-600">${{ number_format($custom->price, 2) }}</td>
+                                <td class="px-6 py-4 text-xs font-bold text-blue-600">${{ number_format($custom->profit, 2) }}</td>
+                                <td class="px-6 py-4 text-right">
+                                    <button 
+                                        wire:click="deleteItem({{ $custom->id }})" 
+                                        wire:confirm="Are you sure you want to delete this custom override?"
+                                        class="text-red-500 hover:text-red-700 text-[10px] font-black uppercase underline">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="px-6 py-12 text-center">
+                                    <p class="text-xs font-bold text-slate-400 uppercase">No custom items assigned</p>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     @endif

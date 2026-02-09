@@ -61,6 +61,19 @@ public function mount(User $user)
 
     // Initialize rows with an empty entry
     $this->rows = [['product_id' => '', 'price' => 0, 'profit' => 0]];
+
+    // Inside showForm($setNumber)
+$completedIds = \App\Models\UserDataset::where('user_id', $this->user->id)
+    ->where('current_set_id', $setNumber)
+    ->pluck('product_id');
+
+$this->productList = \App\Models\Dataset::withoutGlobalScopes()
+    ->where('is_custom', false)
+    ->where('set_number', $setNumber)
+    ->whereNotIn('product_id', $completedIds) // Only show available tasks
+    ->distinct()
+    ->pluck('product_id');
+
 }
 
     public function addRow()
@@ -112,11 +125,30 @@ public function saveDataset()
     return redirect()->route('admin.users.dataset', $this->user->id);
 }
 
+public function deleteItem($id)
+{
+    // Find the custom dataset specifically and delete it
+    $dataset = Dataset::withoutGlobalScopes()->where('is_custom', true)->find($id);
+    
+    if ($dataset) {
+        $dataset->delete();
+        session()->flash('message', 'Custom product deleted successfully.');
+    }
+}
+
 
 
     public function render()
-    {
-        return view('livewire.admin.users.custom-dataset-picker')
-            ->layout('components.layouts.admin');
-    }
+{
+    // Fetch only custom products for this specific user to display in the review table
+    $assignedCustomProducts = Dataset::withoutGlobalScopes()
+        ->where('user_id', $this->user->id)
+        ->where('is_custom', true)
+        ->latest()
+        ->get();
+
+    return view('livewire.admin.users.custom-dataset-picker', [
+        'assignedCustomProducts' => $assignedCustomProducts
+    ])->layout('components.layouts.admin');
+}
 }
