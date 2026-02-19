@@ -7,8 +7,8 @@ class ServiceContact extends Component
 {
     #[Title('service')]
     // International format: country code + number (no +, no spaces)
-    public $whatsappNumber = '18506931231';
-    public $whatsappNumber1 = '4571410230';
+    public $whatsappNumber = '15715442498';
+    public $whatsappNumber1 = '4591461186';
     public $telegramUsername = '@CLVSN';
 
     public function render()

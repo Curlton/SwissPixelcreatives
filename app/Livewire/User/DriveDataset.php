@@ -38,7 +38,7 @@ class DriveDataset extends Component
     }
 
 
- public function driveNow()
+public function driveNow()
 {
     $user = Auth::user()->fresh();
 
@@ -57,14 +57,22 @@ class DriveDataset extends Component
     
     if ($user->balance < 70) {
         $hasCompletedTasks = UserDataset::where('user_id', $user->id)->exists();
+        $this->dispatch('hide-loader');
+        
         if (!$hasCompletedTasks) {
-            $this->dispatch('hide-loader');
+            // Logic for Brand New Users
             $this->dispatch('alert', [
                 'type' => 'info', 
                 'message' => 'Welcome! You must make an initial deposit of $70.00 USD to start driving.'
             ]);
-            return;
+        } else {
+            // Logic for Existing Users who fell below the threshold
+            $this->dispatch('alert', [
+                'type' => 'warning', 
+                'message' => 'Insufficient balance. You must maintain at least $70.00 USD to continue driving.'
+            ]);
         }
+        return;
     }
 
     // --- CRITICAL FIX: FROZEN CHECK ---
@@ -100,6 +108,7 @@ class DriveDataset extends Component
         ->skip($completedSlotsCount)
         ->first();
 
+
     if ($originalProduct) {
         // 3. PRIORITY OVERRIDE CHECK
         $customOverride = Dataset::where('is_custom', true)
@@ -120,7 +129,6 @@ class DriveDataset extends Component
         ]);
     }
 }
-
 
  public function submitTask()
 {

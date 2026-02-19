@@ -94,8 +94,9 @@
     <div class="flex flex-col items-center gap-2">
         <!-- Current Count Display -->
         <span class="bg-blue-50 text-blue-600 px-2 py-1 rounded text-xs font-medium">
-            {{ $user->completed_datasets_count ?? 0 }} Items
+              {{ $user->completed_datasets_count ?? 0 }} Items
         </span>
+
 
         <!-- New Dataset Management Link -->
         <a href="{{ route('admin.users.dataset', ['user' => $user->id]) }}" 
